@@ -40,10 +40,10 @@ class FaberAgent(DemoAgent):
         **kwargs,
     ):
         super().__init__(
-            "Faber.Agent",
+            "Journalist.Agent",
             http_port,
             admin_port,
-            prefix="Faber",
+            prefix="Journalist",
             tails_server_base_url=tails_server_base_url,
             extra_args=[]
             if no_auto
@@ -187,9 +187,9 @@ async def main(
                 _,  # schema id
                 credential_definition_id,
             ) = await agent.register_schema_and_creddef(
-                "degree schema",
+                "message schema",
                 version,
-                ["name", "date", "degree", "age", "timestamp"],
+                ["name", "date", "message", "file", "timestamp"],
                 support_revocation=revocation,
                 revocation_registry_size=TAILS_FILE_COUNT if revocation else None,
             )
@@ -199,7 +199,7 @@ async def main(
         with log_timer("Generate invitation duration:"):
             # Generate an invitation
             log_status(
-                "#7 Create a connection to alice and print out the invite details"
+                "#7 Create a connection to whistleblower and print out the invite details"
             )
             connection = await agent.admin_POST("/connections/create-invitation")
 
@@ -250,10 +250,10 @@ async def main(
 
                 # TODO define attributes to send for credential
                 agent.cred_attrs[credential_definition_id] = {
-                    "name": "Alice Smith",
+                    "name": "Whistleblower Smith",
                     "date": "2018-05-28",
-                    "degree": "Maths",
-                    "age": "24",
+                    "message": "Maths",
+                    "file": "24",
                     "timestamp": str(int(time.time())),
                 }
 
@@ -276,7 +276,7 @@ async def main(
                 # TODO issue an additional credential for Student ID
 
             elif option == "2":
-                log_status("#20 Request proof of degree from alice")
+                log_status("#20 Request proof of message from whistleblower")
                 req_attrs = [
                     {"name": "name", "restrictions": [{"issuer_did": agent.did}]},
                     {"name": "date", "restrictions": [{"issuer_did": agent.did}]},
@@ -284,14 +284,14 @@ async def main(
                 if revocation:
                     req_attrs.append(
                         {
-                            "name": "degree",
+                            "name": "message",
                             "restrictions": [{"issuer_did": agent.did}],
                             "non_revoked": {"to": int(time.time() - 1)},
                         },
                     )
                 else:
                     req_attrs.append(
-                        {"name": "degree", "restrictions": [{"issuer_did": agent.did}]}
+                        {"name": "message", "restrictions": [{"issuer_did": agent.did}]}
                     )
                 if SELF_ATTESTED:
                     # test self-attested claims
@@ -301,7 +301,7 @@ async def main(
                 req_preds = [
                     # test zero-knowledge proofs
                     {
-                        "name": "age",
+                        "name": "file",
                         "p_type": ">=",
                         "p_value": 18,
                         "restrictions": [{"issuer_did": agent.did}],
@@ -389,7 +389,7 @@ async def main(
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description="Runs a Faber demo agent.")
+    parser = argparse.ArgumentParser(description="Runs a Journalist demo agent.")
     parser.add_argument("--no-auto", action="store_true", help="Disable auto issuance")
     parser.add_argument(
         "-p",
@@ -430,7 +430,7 @@ if __name__ == "__main__":
             import pydevd_pycharm
 
             print(
-                "Faber remote debugging to "
+                "Journalist remote debugging to "
                 f"{PYDEVD_PYCHARM_HOST}:{PYDEVD_PYCHARM_CONTROLLER_PORT}"
             )
             pydevd_pycharm.settrace(

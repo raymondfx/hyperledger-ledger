@@ -5,7 +5,7 @@ There are several demos available for ACA-Py mostly (but not only) aimed at deve
 ## Table of Contents <!-- omit in toc -->
 
 - [The IIWBook Demo](#the-iiwbook-demo)
-- [The Alice/Faber Python demo](#the-alicefaber-python-demo)
+- [The Whistleblower/Journalist Python demo](#the-alicefaber-python-demo)
   - [Running in a Browser](#running-in-a-browser)
   - [Running in Docker](#running-in-docker)
   - [Running Locally](#running-locally)
@@ -14,11 +14,11 @@ There are several demos available for ACA-Py mostly (but not only) aimed at deve
     - [Genesis File handling](#genesis-file-handling)
     - [Run a local Postgres instance](#run-a-local-postgres-instance)
     - [Optional: Run a von-network ledger browser](#optional-run-a-von-network-ledger-browser)
-    - [Run the Alice and Faber Controllers/Agents](#run-the-alice-and-faber-controllersagents)
+    - [Run the Whistleblower and Journalist Controllers/Agents](#run-the-whistleblower-and-journalist-controllersagents)
   - [Follow The Script](#follow-the-script)
     - [Exchanging Messages](#exchanging-messages)
     - [Issuing and Proving Credentials](#issuing-and-proving-credentials)
-- [Learning about the Alice/Faber code](#learning-about-the-alicefaber-code)
+- [Learning about the Whistleblower/Journalist code](#learning-about-the-alicefaber-code)
 - [OpenAPI (Swagger) Demo](#openapi-swagger-demo)
 - [Performance Demo](#performance-demo)
 - [Coding Challenge: Adding ACME](#coding-challenge-adding-acme)
@@ -27,29 +27,29 @@ There are several demos available for ACA-Py mostly (but not only) aimed at deve
 
 The IIWBook demo is a real (play) self-sovereign identity demonstration. During the demo, you will get a mobile agent (sorry - IOS only right now), and use that agent to connect with several enterprise services to collect and prove credentials. The two services in the demo (the [email verification service](https://github.com/bcgov/indy-email-verification) and [IIWBook](https://github.com/bcgov/iiwbook)) are both instances of ACA-Py, and all the agents are using DIDComm to communicate. Learn about and run the demo at [https://vonx.io/how_to/iiwbook](https://vonx.io/how_to/iiwbook). Developers, when you are ready, check out the code in the repos of the two services to see how they implement Django web server-based controller and agent.
 
-## The Alice/Faber Python demo
+## The Whistleblower/Journalist Python demo
 
-The Alice/Faber demo is the (in)famous first verifiable credentials demo. Alice, a former student of Faber College ("Knowledge is Good"), connects with the College, is issued a credential about her degree and then is asked by the College for a proof. There are a variety of ways of running the demo. The easiest is in your browser using a site ("Play with VON") that let's you run docker containers without installing anything. Alternatively, you can run locally on docker (our recommendation), or using python on your local machine. Each approach is covered below.
+The Whistleblower/Journalist demo is the (in)famous first verifiable credentials demo. Whistleblower, a former student of Journalist College ("Knowledge is Good"), connects with the College, is issued a credential about her message and then is asked by the College for a proof. There are a variety of ways of running the demo. The easiest is in your browser using a site ("Play with VON") that let's you run docker containers without installing anything. Alternatively, you can run locally on docker (our recommendation), or using python on your local machine. Each approach is covered below.
 
 ### Running in a Browser
 
-In your browser, go to the docker playground service [Play with VON](http://play-with-von.vonx.io) (from the BC Gov). On the title screen, click "Start". On the next screen, click (in the left menu) "+Add a new instance".  That will start up a terminal in your browser. Run the following commands to start the Faber agent:
+In your browser, go to the docker playground service [Play with VON](http://play-with-von.vonx.io) (from the BC Gov). On the title screen, click "Start". On the next screen, click (in the left menu) "+Add a new instance".  That will start up a terminal in your browser. Run the following commands to start the Journalist agent:
 
 ```bash
 git clone https://github.com/hyperledger/aries-cloudagent-python
 cd aries-cloudagent-python/demo
-LEDGER_URL=http://dev.greenlight.bcovrin.vonx.io ./run_demo faber
+LEDGER_URL=http://dev.greenlight.bcovrin.vonx.io ./run_demo journalist
 ```
 
-Now to start Alice's agent. Click the "+Add a new instance" button again to open another terminal session. Run the following commands to start Alice's agent:
+Now to start Whistleblower's agent. Click the "+Add a new instance" button again to open another terminal session. Run the following commands to start Whistleblower's agent:
 
 ```bash
 git clone https://github.com/hyperledger/aries-cloudagent-python
 cd aries-cloudagent-python/demo
-LEDGER_URL=http://dev.greenlight.bcovrin.vonx.io ./run_demo alice
+LEDGER_URL=http://dev.greenlight.bcovrin.vonx.io ./run_demo whistleblower
 ```
 
-Alice's agent is now running.
+Whistleblower's agent is now running.
 
 Jump to the [Follow the Script](#follow-the-script) section below for further instructions.
 
@@ -61,23 +61,23 @@ Open three `bash` shells. For Windows users, `git-bash` is highly recommended. b
 
 In the first terminal window, start `von-network` by following the [Running the Network Locally](https://github.com/bcgov/von-network#running-the-network-locally) instructions.
 
-In the second terminal, change directory into `demo` directory of your clone of this repository. Start the `faber` agent by issuing the following command:
+In the second terminal, change directory into `demo` directory of your clone of this repository. Start the `journalist` agent by issuing the following command:
 
 ``` bash
-  ./run_demo faber 
+  ./run_demo journalist 
 ```
 
-In the third terminal, change directory into `demo` directory of your clone of this repository. Start the `alice` agent by issuing the following command:
+In the third terminal, change directory into `demo` directory of your clone of this repository. Start the `whistleblower` agent by issuing the following command:
 
 ``` bash
-  ./run_demo alice
+  ./run_demo whistleblower
 ```
 
 Jump to the [Follow the Script](#follow-the-script) section below for further instructions. 
 
 ### Running Locally
 
-The following is an approach to to running the Alice and Faber demo using Python3 running on a bare machine. There are other ways to run the components, but this covers the general approach.
+The following is an approach to to running the Whistleblower and Journalist demo using Python3 running on a bare machine. There are other ways to run the components, but this covers the general approach.
 
 #### Installing Prerequisites
 
@@ -115,19 +115,19 @@ If you want to be able to browse your local ledger as you run the demo, clone th
 GENESIS_FILE=/path/to/local-genesis.txt PORT=9000 REGISTER_NEW_DIDS=true python -m server.server
 ```
 
-#### Run the Alice and Faber Controllers/Agents
+#### Run the Whistleblower and Journalist Controllers/Agents
 
-With the rest of the pieces running, you can run the Alice and Faber controllers and agents. To do so, `cd` into the `demo` folder your clone of this repo in two terminal windows and run the following, replacing the `/path/to/local-genesis.txt`.
+With the rest of the pieces running, you can run the Whistleblower and Journalist controllers and agents. To do so, `cd` into the `demo` folder your clone of this repo in two terminal windows and run the following, replacing the `/path/to/local-genesis.txt`.
 
 ``` bash
-GENESIS_FILE=/path/to/local-genesis.txt DEFAULT_POSTGRES=true python3 -m runners.faber --port 8020
+GENESIS_FILE=/path/to/local-genesis.txt DEFAULT_POSTGRES=true python3 -m runners.journalist --port 8020
 ```
 
 ``` bash
-GENESIS_FILE=/path/to/local-genesis.txt DEFAULT_POSTGRES=true python3 -m runners.alice --port 8030
+GENESIS_FILE=/path/to/local-genesis.txt DEFAULT_POSTGRES=true python3 -m runners.whistleblower --port 8030
 ```
 
-Note that Alice and Faber will each use 5 ports, e.g. using the parameter `... --port 8020` actually uses ports 8020 through 8024. Feel free to use different ports if you want.
+Note that Whistleblower and Journalist will each use 5 ports, e.g. using the parameter `... --port 8020` actually uses ports 8020 through 8024. Feel free to use different ports if you want.
 
 Everything running?  See the [Follow the Script](#follow-the-script) section below for further instructions.
 
@@ -140,21 +140,21 @@ If the demo fails with an error that references the genesis file, a timeout conn
 
 ### Follow The Script
 
-With both the Alice and Faber agents started, go to the Faber terminal window. The Faber agent has created and displayed an invitation. Copy this invitation and paste it at the Alice prompt. The agents will connect and then show a menu of options:
+With both the Whistleblower and Journalist agents started, go to the Journalist terminal window. The Journalist agent has created and displayed an invitation. Copy this invitation and paste it at the Whistleblower prompt. The agents will connect and then show a menu of options:
 
-Faber:
+Journalist:
 
 ```
-    1 = Issue Credential - send a credential to Alice
-    2 = Send Proof Request - send a proof request to Alice
-    3 = Send Message - send a message to Alice
+    1 = Issue Credential - send a credential to Whistleblower
+    2 = Send Proof Request - send a proof request to Whistleblower
+    3 = Send Message - send a message to Whistleblower
     x = Exit - Stop and exit
 ```
 
-Alice:
+Whistleblower:
 
 ```
-    3 = Send Message - send a message to Faber
+    3 = Send Message - send a message to Journalist
     4 = Input New Invitation
     x = Exit - stop and exit
 ```
@@ -165,15 +165,15 @@ Feel free to use the "3" option to send messages back and forth between the agen
 
 #### Issuing and Proving Credentials
 
-When ready to test the credentials exchange protocols, go to the Faber prompt, enter "1" to send a credential, and then "2" to request a proof.
+When ready to test the credentials exchange protocols, go to the Journalist prompt, enter "1" to send a credential, and then "2" to request a proof.
 
-You don't need to do anything with Alice's agent - her agent is implemented to automatically receive credentials and respond to proof requests.
+You don't need to do anything with Whistleblower's agent - her agent is implemented to automatically receive credentials and respond to proof requests.
 
-## Learning about the Alice/Faber code
+## Learning about the Whistleblower/Journalist code
 
-These Alice and Faber scripts (in the `demo/runners` folder) implement the controller and run the agent as a sub-process (see the documentation for `aca-py`). The controller publishes a REST service to receive web hook callbacks from their agent. Note that this architecture, running the agent as a sub-process, is a variation on the documented architecture of running the controller and agent as separate processes/containers.
+These Whistleblower and Journalist scripts (in the `demo/runners` folder) implement the controller and run the agent as a sub-process (see the documentation for `aca-py`). The controller publishes a REST service to receive web hook callbacks from their agent. Note that this architecture, running the agent as a sub-process, is a variation on the documented architecture of running the controller and agent as separate processes/containers.
 
-The controllers for this demo can be found in the [alice.py](runners/alice.py) and [faber.py](runners/faber.py) files. Alice and Faber are instances of the agent class found in [agent.py](runners/support/agent.py).
+The controllers for this demo can be found in the [whistleblower.py](runners/whistleblower.py) and [journalist.py](runners/journalist.py) files. Whistleblower and Journalist are instances of the agent class found in [agent.py](runners/support/agent.py).
 
 ## OpenAPI (Swagger) Demo
 
@@ -181,28 +181,28 @@ Developing an ACA-Py controller is much like developing a web app that uses a RE
 
 ## Performance Demo
 
-Another example in the `demo/runners` folder is [performance.py](runners/performance.py), that is used to test out the performance of interacting agents. The script starts up agents for Alice and Faber, initializes them, and then runs through an interaction some number of times. In this case, Faber issues a credential to Alice 300 times.
+Another example in the `demo/runners` folder is [performance.py](runners/performance.py), that is used to test out the performance of interacting agents. The script starts up agents for Whistleblower and Journalist, initializes them, and then runs through an interaction some number of times. In this case, Journalist issues a credential to Whistleblower 300 times.
 
-To run the demo, make sure that you shut down any running Alice/Faber agents. Then, follow the same steps to start the Alice/Faber demo, but:
+To run the demo, make sure that you shut down any running Whistleblower/Journalist agents. Then, follow the same steps to start the Whistleblower/Journalist demo, but:
 
-* When starting the first agent, replace the agent name (e.g. `faber`) with `performance`.
-* Don't start the second agent (`alice`) at all.
+* When starting the first agent, replace the agent name (e.g. `journalist`) with `performance`.
+* Don't start the second agent (`whistleblower`) at all.
 
 The script starts both agents, runs the performance test, spits out performance results and shuts down the agents. Note that this is just one demonstration of how performance metrics tracking can be done with ACA-Py.
 
-A second version of the performance test can be run by adding the parameter `--routing` to the invocation above. The parameter triggers the example to run with Alice using a routing agent such that all messages pass through the routing agent between Alice and Faber. This is a good, simple example of how routing can be implemented with DIDComm agents.
+A second version of the performance test can be run by adding the parameter `--routing` to the invocation above. The parameter triggers the example to run with Whistleblower using a routing agent such that all messages pass through the routing agent between Whistleblower and Journalist. This is a good, simple example of how routing can be implemented with DIDComm agents.
 
 ## Coding Challenge: Adding ACME
 
-Now that you have a solid foundation in using ACA-Py, time for a coding challenge. In this challenge, we extend the Alice-Faber command line demo by adding in ACME Corp, a place where Alice wants to work. The demo adds:
+Now that you have a solid foundation in using ACA-Py, time for a coding challenge. In this challenge, we extend the Whistleblower-Journalist command line demo by adding in ACME Corp, a place where Whistleblower wants to work. The demo adds:
 
-* ACME inviting Alice to connect
-* ACME requesting a proof of her College degree
-* ACME issuing Alice a credential after she is hired.
+* ACME inviting Whistleblower to connect
+* ACME requesting a proof of her College message
+* ACME issuing Whistleblower a credential after she is hired.
 
-The framework for the code is in the [acme.py](runners/acme.py) file, but the code is incomplete. Using the knowledge you gained from running demo and viewing the alice.py and faber.py code, fill in the blanks for the code.  When you are ready to test your work:
+The framework for the code is in the [acme.py](runners/acme.py) file, but the code is incomplete. Using the knowledge you gained from running demo and viewing the whistleblower.py and journalist.py code, fill in the blanks for the code.  When you are ready to test your work:
 
-* Use the instructions above to start the Alice/Faber demo (above).
-* Start another terminal session and run the same commands as for "Alice", but replace "alice" with "acme".
+* Use the instructions above to start the Whistleblower/Journalist demo (above).
+* Start another terminal session and run the same commands as for "Whistleblower", but replace "whistleblower" with "acme".
 
 All done? Checkout how we added the missing code segments [here](AcmeDemoWorkshop.md).

@@ -135,7 +135,7 @@ async def main(start_port: int, show_timing: bool = False):
         with log_timer("Generate invitation duration:"):
             # Generate an invitation
             log_status(
-                "#5 Create a connection to alice and print out the invite details"
+                "#5 Create a connection to whistleblower and print out the invite details"
             )
             connection = await agent.admin_POST("/connections/create-invitation")
 
@@ -161,7 +161,7 @@ async def main(start_port: int, show_timing: bool = False):
                 # TODO credential offers
 
             elif option == "2":
-                log_status("#20 Request proof of degree from alice")
+                log_status("#20 Request proof of message from whistleblower")
                 # TODO presentation requests
 
             elif option == "3":

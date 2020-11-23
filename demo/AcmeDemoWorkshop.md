@@ -1,7 +1,7 @@
 
 # Acme Controller Workshop
 
-In this workshop we will add some functionality to a third participant in the Alice/Faber drama - namely, Acme Inc.  After completing her education at Faber College, Alice is going to apply for a job at Acme Inc.  To do this she must provide proof of education (once she has completed the interview and other non-Indy tasks), and then Acme will issue her an employment credential.
+In this workshop we will add some functionality to a third participant in the Whistleblower/Journalist drama - namely, Acme Inc.  After completing her education at Journalist College, Whistleblower is going to apply for a job at Acme Inc.  To do this she must provide proof of education (once she has completed the interview and other non-Indy tasks), and then Acme will issue her an employment credential.
 
 Note that an updated Acme controller is available here: https://github.com/ianco/aries-cloudagent-python/tree/acme_workshop/demo if you just want to skip ahead ...  There is also an alternate solution with some additional functionality available here:  https://github.com/ianco/aries-cloudagent-python/tree/agent_workshop/demo
 
@@ -10,7 +10,7 @@ Note that an updated Acme controller is available here: https://github.com/ianco
 
 There is already a skeleton of the Acme controller in place, you can run it as follows.  (Note that beyond establishing a connection it doesn't actually do anything yet.)
 
-To run the Acme controller template, first run Alice and Faber so that Alice can prove her education experience:
+To run the Acme controller template, first run Whistleblower and Journalist so that Whistleblower can prove her education experience:
 
 Open 2 bash shells, and in each run:
 
@@ -19,37 +19,37 @@ git clone https://github.com/hyperledger/aries-cloudagent-python.git
 cd aries-cloudagent-python/demo
 ```
 
-In one shell run Faber:
+In one shell run Journalist:
 
 ```bash
-./run_demo faber
+./run_demo journalist
 ```
 
-... and in the second shell run Alice:
+... and in the second shell run Whistleblower:
 
 ```bash
-./run_demo alice
+./run_demo whistleblower
 ```
 
-When Faber has produced an invitation, copy it over to Alice.
+When Journalist has produced an invitation, copy it over to Whistleblower.
 
-Then, in the Faber shell, select option ```1``` to issue a credential to Alice.  (You can select option ```2``` if you like, to confirm via proof.)
+Then, in the Journalist shell, select option ```1``` to issue a credential to Whistleblower.  (You can select option ```2``` if you like, to confirm via proof.)
 
-Then, in the Faber shell, enter ```X``` to exit the controller, and then run the Acme controller:
+Then, in the Journalist shell, enter ```X``` to exit the controller, and then run the Acme controller:
 
 ```bash
 X
 ./run_demo acme
 ```
 
-In the Alice shell, select option ```4``` (to enter a new invitation) and then copy over Acme's invitation once it's available.
+In the Whistleblower shell, select option ```4``` (to enter a new invitation) and then copy over Acme's invitation once it's available.
 
 Then, in the Acme shell, you can select option ```2``` and then option ```1```, which don't do anything ... yet!!!
 
 
-## Asking Alice for a Proof of Education
+## Asking Whistleblower for a Proof of Education
 
-In the Acme code ```acme.py``` we are going to add code to issue a proof request to Alice, and then validate the received proof.
+In the Acme code ```acme.py``` we are going to add code to issue a proof request to Whistleblower, and then validate the received proof.
 
 First the following import statements and a constant we will need near the top of acme.py:
 ```
@@ -69,7 +69,7 @@ Next locate the code that is triggered by option ```2```:
 
 ```
             elif option == "2":
-                log_status("#20 Request proof of degree from alice")
+                log_status("#20 Request proof of message from whistleblower")
                 # TODO presentation requests
 ```
 
@@ -79,15 +79,15 @@ Replace the ```# TODO``` comment with the following code:
                 req_attrs = [
                     {
                         "name": "name",
-                        "restrictions": [{"schema_name": "degree schema"}]
+                        "restrictions": [{"schema_name": "message schema"}]
                     },
                     {
                         "name": "date",
-                        "restrictions": [{"schema_name": "degree schema"}]
+                        "restrictions": [{"schema_name": "message schema"}]
                     },
                     {
-                        "name": "degree",
-                        "restrictions": [{"schema_name": "degree schema"}]
+                        "name": "message",
+                        "restrictions": [{"schema_name": "message schema"}]
                     }
                 ]
                 req_preds = []
@@ -105,7 +105,7 @@ Replace the ```# TODO``` comment with the following code:
                     "connection_id": agent.connection_id,
                     "proof_request": indy_proof_request
                 }
-                # this sends the request to our agent, which forwards it to Alice
+                # this sends the request to our agent, which forwards it to Whistleblower
                 # (based on the connection_id)
                 await agent.admin_POST(
                     "/present-proof/send-request",
@@ -131,7 +131,7 @@ then replace the ```# TODO``` comment and the ```pass``` statement:
             )
             self.log("Proof = ", proof["verified"])
 
-            # if presentation is a degree schema (proof of education),
+            # if presentation is a message schema (proof of education),
             # check values received
             pres_req = message["presentation_request"]
             pres = message["presentation"]
@@ -157,12 +157,12 @@ then replace the ```# TODO``` comment and the ```pass``` statement:
 
 Right now this just verifies the proof received and prints out the attributes it reveals, but in "real life" your application could do something useful with this information.
 
-Now you can run the Faber/Alice/Acme script from the "Preview of the Acme Controller" section above, and you should see Acme receive a proof from Alice!
+Now you can run the Journalist/Whistleblower/Acme script from the "Preview of the Acme Controller" section above, and you should see Acme receive a proof from Whistleblower!
 
 
-## Issuing Alice a Work Credential
+## Issuing Whistleblower a Work Credential
 
-Now we can issue a work credential to Alice!
+Now we can issue a work credential to Whistleblower!
 
 There are two options for this.  We can (a) add code under option ```1``` to issue the credential, or (b) we can automatically issue this credential on receipt of the education proof.
 
@@ -229,7 +229,7 @@ with the following code:
 ```
                 agent.cred_attrs[credential_definition_id] = {
                     "employee_id": "ACME0009",
-                    "name": "Alice Smith",
+                    "name": "Whistleblower Smith",
                     "date": date.isoformat(date.today()),
                     "position": "CEO"
                 }
@@ -280,4 +280,4 @@ with the following code:
             )
 ```
 
-Now you can run the Faber/Alice/Acme script again.  You should be able to receive a proof and then issue a credential to Alice.
+Now you can run the Journalist/Whistleblower/Acme script again.  You should be able to receive a proof and then issue a credential to Whistleblower.

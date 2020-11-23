@@ -52,6 +52,6 @@ class InvitationSchema(AgentMessageSchema):
     message = fields.Str(
         required=False,
         description="Comments on the introduction",
-        example="Hello Bob, it's Alice",
+        example="Hello Bob, it's Whistleblower",
         allow_none=True,
     )

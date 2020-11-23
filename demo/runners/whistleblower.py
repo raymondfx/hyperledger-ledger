@@ -29,10 +29,10 @@ class AliceAgent(DemoAgent):
         self, http_port: int, admin_port: int, no_auto: bool = False, **kwargs
     ):
         super().__init__(
-            "Alice.Agent",
+            "Whistleblower.Agent",
             http_port,
             admin_port,
-            prefix="Alice",
+            prefix="Whistleblower",
             extra_args=[]
             if no_auto
             else [
@@ -237,7 +237,7 @@ async def main(start_port: int, no_auto: bool = False, show_timing: bool = False
         log_msg("Admin URL is at:", agent.admin_url)
         log_msg("Endpoint URL is at:", agent.endpoint)
 
-        log_status("#9 Input faber.py invitation details")
+        log_status("#9 Input journalist.py invitation details")
         await input_invitation(agent)
 
         async for option in prompt_loop(
@@ -287,7 +287,7 @@ async def main(start_port: int, no_auto: bool = False, show_timing: bool = False
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description="Runs an Alice demo agent.")
+    parser = argparse.ArgumentParser(description="Runs an Whistleblower demo agent.")
     parser.add_argument("--no-auto", action="store_true", help="Disable auto issuance")
     parser.add_argument(
         "-p",
@@ -317,7 +317,7 @@ if __name__ == "__main__":
             import pydevd_pycharm
 
             print(
-                f"Alice remote debugging to {PYDEVD_PYCHARM_HOST}:{PYDEVD_PYCHARM_CONTROLLER_PORT}"
+                f"Whistleblower remote debugging to {PYDEVD_PYCHARM_HOST}:{PYDEVD_PYCHARM_CONTROLLER_PORT}"
             )
             pydevd_pycharm.settrace(
                 host=PYDEVD_PYCHARM_HOST,

@@ -89,7 +89,7 @@ class ConnectionManager:
 
             {
                 "@type": "https://didcomm.org/connections/1.0/invitation",
-                "label": "Alice",
+                "label": "Whistleblower",
                 "did": "did:sov:QmWbsNYhMrjHiqZDTUTEJs"
             }
 
@@ -99,7 +99,7 @@ class ConnectionManager:
 
             {
                 "@type": "https://didcomm.org/connections/1.0/invitation",
-                "label": "Alice",
+                "label": "Whistleblower",
                 "did": "did:peer:oiSqsNYhMrjHiqZDTUthsw",
                 "recipientKeys": ["8HH5gYEeNc3z7PYXmd54d4x6qAfCNrqQqEB3nS7Zfu7K"],
                 "serviceEndpoint": "https://example.com/endpoint"

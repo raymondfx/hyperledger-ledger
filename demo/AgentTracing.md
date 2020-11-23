@@ -25,7 +25,7 @@ The `--trace` option enables tracing globally for the agent, the other options c
 
 Tracing can be enabled on an exchange-by-exchange basis, by including `{ ... "trace": True, ...}` in the JSON payload to the API call (for credential and proof exchanges).
 
-## Enabling Tracing in the Alice/Faber Demo
+## Enabling Tracing in the Whistleblower/Journalist Demo
 
 The `run_demo` script supports the following parameters and environment variables.
 
@@ -51,10 +51,10 @@ Parameters:
                        (sets TRACE_ENABLED, TRACE_TARGET, TRACE_TAG)
 ```
 
-When running the Faber controller, tracing can be enabled using the `T` menu option:
+When running the Journalist controller, tracing can be enabled using the `T` menu option:
 
 ```
-Faber      | Connected
+Journalist      | Connected
     (1) Issue Credential
     (2) Send Proof Request
     (3) Send Message
@@ -88,11 +88,11 @@ When `Exchange Tracing` is `ON`, all exchanges will include tracing.
 You can use the `EFK` stack in the [EFK sub-directory](./EFK-stack) as a target for trace events, just start the EFK stack using the docker-compose file and then in two separate bash shells, startup the demo as follows:
 
 ```bash
-DOCKER_NET=efk-stack_efk_net TRACE_TARGET_URL=fluentd:8088 ./run_demo faber --trace-http
+DOCKER_NET=efk-stack_efk_net TRACE_TARGET_URL=fluentd:8088 ./run_demo journalist --trace-http
 ```
 
 ```bash
-DOCKER_NET=efk-stack_efk_net TRACE_TARGET_URL=fluentd:8088 ./run_demo alice --trace-http
+DOCKER_NET=efk-stack_efk_net TRACE_TARGET_URL=fluentd:8088 ./run_demo whistleblower --trace-http
 ```
 
 ## Hooking into event messaging
@@ -100,5 +100,5 @@ DOCKER_NET=efk-stack_efk_net TRACE_TARGET_URL=fluentd:8088 ./run_demo alice --tr
 ACA-PY supports sending events to web hooks, which allows the demo agents to display them in the CLI. To also send them to another end point, use the `--webhook-url` option, which requires the `WEBHOOK_URL` environment variable. Configure an end point running on the docker host system, port *8888*, use the following:
 
 ```bash
-WEBHOOK_URL=host.docker.internal:8888 ./run_demo faber --webhook-url
+WEBHOOK_URL=host.docker.internal:8888 ./run_demo journalist --webhook-url
 ```

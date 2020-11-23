@@ -6,7 +6,7 @@ Many Aries edge agents do not directly receive messages from a peer edge agent -
 - The person does not want to allow correlation of their agent across relationships and so they use a shared, common endpoint (e.g. https://agents-R-Us.com) that they are "hidden in a crowd".
 - An enterprise wants a single gateway to the many enterprise agents they have in their organization.
 
-Thus, when a DIDcomm message is sent from one edge agent to another, it is routed per the instructions of the receiver and for the needs of the sender. For example, in the following picture, Alice might be told by Bob to send messages to his phone (agent 4) via agents 9 and 3, and Alice might always send out messages via agent 2.
+Thus, when a DIDcomm message is sent from one edge agent to another, it is routed per the instructions of the receiver and for the needs of the sender. For example, in the following picture, Whistleblower might be told by Bob to send messages to his phone (agent 4) via agents 9 and 3, and Whistleblower might always send out messages via agent 2.
 
 ![image](https://github.com/hyperledger/aries-rfcs/raw/master/features/0067-didcomm-diddoc-conventions/domains.jpg)
 

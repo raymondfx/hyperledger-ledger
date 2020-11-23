@@ -2,15 +2,15 @@
 
 The following are some demos that you can go through to see verifiable credentials in action. For each of the demos, we've included some guidance on what you should get out of the demo - and where you should **stop** exploring the demos. Later on in this guide we have some command line demos built on current generation code for developers wanting to look at what's going on under the hood.
 
-### Alice and Faber - edX Version
+### Whistleblower and Journalist - edX Version
 
-The Hyperledger Indy community is littered with "Alice and Faber" demos. Alice is a former student of [Faber College](https://en.wikipedia.org/wiki/Animal_House) (motto: Knowledge is Good), and is offered from Faber a verifiable credential that she can use to prove her educational accomplishments. Alice proves the claims in the credential to get a job at ACME Corp, and then uses a credential about her job at ACME Corp. to get a loan from Thrift Bank.
+The Hyperledger Indy community is littered with "Whistleblower and Journalist" demos. Whistleblower is a former student of [Journalist College](https://en.wikipedia.org/wiki/Animal_House) (motto: Knowledge is Good), and is offered from Journalist a verifiable credential that she can use to prove her educational accomplishments. Whistleblower proves the claims in the credential to get a job at ACME Corp, and then uses a credential about her job at ACME Corp. to get a loan from Thrift Bank.
 
-The edX course version of the Alice/Faber story is good if you are new to Indy because in going through the story you get a web interface to see the interactions/technical steps in establishing connections between agents and the process for issuing and verifying credentials. **DO NOT** look into the underlying code because it is not maintained, and it is out-of-date.
+The edX course version of the Whistleblower/Journalist story is good if you are new to Indy because in going through the story you get a web interface to see the interactions/technical steps in establishing connections between agents and the process for issuing and verifying credentials. **DO NOT** look into the underlying code because it is not maintained, and it is out-of-date.
 
 We recommend using the "In Browser" steps to run the demo vs. getting things running on your local machine.
 
-Link: [Alice and Faber - edX Version](https://github.com/hyperledger/education/blob/master/LFS171x/indy-material/nodejs/README.md)
+Link: [Whistleblower and Journalist - edX Version](https://github.com/hyperledger/education/blob/master/LFS171x/indy-material/nodejs/README.md)
 
 ### BC Gov's OrgBook and Greenlight
 

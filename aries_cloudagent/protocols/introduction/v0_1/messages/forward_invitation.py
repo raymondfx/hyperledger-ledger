@@ -54,5 +54,5 @@ class ForwardInvitationSchema(AgentMessageSchema):
         required=False,
         allow_none=True,
         description="Comments on the introduction",
-        example="Hello Bob, it's Alice",
+        example="Hello Bob, it's Whistleblower",
     )

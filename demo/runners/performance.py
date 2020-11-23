@@ -152,7 +152,7 @@ class BaseAgent(DemoAgent):
 
 class AliceAgent(BaseAgent):
     def __init__(self, port: int, **kwargs):
-        super().__init__("Alice", port, seed=None, **kwargs)
+        super().__init__("Whistleblower", port, seed=None, **kwargs)
         self.extra_args = [
             "--auto-respond-credential-offer",
             "--auto-store-credential",
@@ -167,7 +167,7 @@ class AliceAgent(BaseAgent):
 
 class FaberAgent(BaseAgent):
     def __init__(self, port: int, **kwargs):
-        super().__init__("Faber", port, **kwargs)
+        super().__init__("Journalist", port, **kwargs)
         self.schema_id = None
         self.credential_definition_id = None
         self.revocation_registry_id = None
@@ -180,9 +180,9 @@ class FaberAgent(BaseAgent):
             % (random.randint(1, 101), random.randint(1, 101), random.randint(1, 101))
         )
         schema_body = {
-            "schema_name": "degree schema",
+            "schema_name": "message schema",
             "schema_version": version,
-            "attributes": ["name", "date", "degree", "age"],
+            "attributes": ["name", "date", "message", "age"],
         }
         schema_response = await self.admin_POST("/schemas", schema_body)
         self.schema_id = schema_response["schema_id"]
@@ -259,25 +259,25 @@ async def main(
         print("Error retrieving ledger genesis transactions")
         sys.exit(1)
 
-    alice = None
-    faber = None
+    whistleblower = None
+    journalist = None
     alice_router = None
     run_timer = log_timer("Total runtime:")
     run_timer.start()
 
     try:
-        alice = AliceAgent(start_port, genesis_data=genesis, timing=show_timing)
-        await alice.listen_webhooks(start_port + 2)
+        whistleblower = AliceAgent(start_port, genesis_data=genesis, timing=show_timing)
+        await whistleblower.listen_webhooks(start_port + 2)
 
-        faber = FaberAgent(
+        journalist = FaberAgent(
             start_port + 3,
             genesis_data=genesis,
             timing=show_timing,
             tails_server_base_url=tails_server_base_url,
         )
 
-        await faber.listen_webhooks(start_port + 5)
-        await faber.register_did()
+        await journalist.listen_webhooks(start_port + 5)
+        await journalist.register_did()
 
         if routing:
             alice_router = RoutingAgent(
@@ -289,35 +289,35 @@ async def main(
         with log_timer("Startup duration:"):
             if alice_router:
                 await alice_router.start_process()
-            await alice.start_process()
-            await faber.start_process()
+            await whistleblower.start_process()
+            await journalist.start_process()
 
         if not ping_only:
             with log_timer("Publish duration:"):
-                await faber.publish_defs(revocation)
-                # await alice.set_tag_policy(faber.credential_definition_id, ["name"])
+                await journalist.publish_defs(revocation)
+                # await whistleblower.set_tag_policy(journalist.credential_definition_id, ["name"])
 
         with log_timer("Connect duration:"):
             if routing:
                 router_invite = await alice_router.get_invite()
-                alice_router_conn_id = await alice.receive_invite(router_invite)
-                await asyncio.wait_for(alice.detect_connection(), 30)
+                alice_router_conn_id = await whistleblower.receive_invite(router_invite)
+                await asyncio.wait_for(whistleblower.detect_connection(), 30)
 
-            invite = await faber.get_invite()
+            invite = await journalist.get_invite()
 
             if routing:
-                conn_id = await alice.receive_invite(invite, auto_accept=False)
-                await alice.establish_inbound(conn_id, alice_router_conn_id)
-                await alice.accept_invite(conn_id)
-                await asyncio.wait_for(alice.detect_connection(), 30)
+                conn_id = await whistleblower.receive_invite(invite, auto_accept=False)
+                await whistleblower.establish_inbound(conn_id, alice_router_conn_id)
+                await whistleblower.accept_invite(conn_id)
+                await asyncio.wait_for(whistleblower.detect_connection(), 30)
             else:
-                await alice.receive_invite(invite)
+                await whistleblower.receive_invite(invite)
 
-            await asyncio.wait_for(faber.detect_connection(), 30)
+            await asyncio.wait_for(journalist.detect_connection(), 30)
 
         if show_timing:
-            await alice.reset_timing()
-            await faber.reset_timing()
+            await whistleblower.reset_timing()
+            await journalist.reset_timing()
             if routing:
                 await alice_router.reset_timing()
 
@@ -327,19 +327,19 @@ async def main(
 
         def done_send(fut: asyncio.Task):
             semaphore.release()
-            faber.check_task_exception(fut)
+            journalist.check_task_exception(fut)
 
         async def send_credential(index: int):
             await semaphore.acquire()
             comment = f"issue test credential {index}"
             attributes = {
-                "name": "Alice Smith",
+                "name": "Whistleblower Smith",
                 "date": "2018-05-28",
-                "degree": "Maths",
+                "message": "Maths",
                 "age": "24",
             }
             asyncio.ensure_future(
-                faber.send_credential(attributes, comment, not revocation)
+                journalist.send_credential(attributes, comment, not revocation)
             ).add_done_callback(done_send)
 
         async def check_received_creds(agent, issue_count, pb):
@@ -363,7 +363,7 @@ async def main(
 
         async def send_ping(index: int):
             await semaphore.acquire()
-            asyncio.ensure_future(faber.send_ping(str(index))).add_done_callback(
+            asyncio.ensure_future(journalist.send_ping(str(index))).add_done_callback(
                 done_send
             )
 
@@ -387,13 +387,13 @@ async def main(
                     break
 
         if ping_only:
-            recv_timer = faber.log_timer(f"Completed {issue_count} ping exchanges in")
-            batch_timer = faber.log_timer(f"Started {batch_size} ping exchanges in")
+            recv_timer = journalist.log_timer(f"Completed {issue_count} ping exchanges in")
+            batch_timer = journalist.log_timer(f"Started {batch_size} ping exchanges in")
         else:
-            recv_timer = faber.log_timer(
+            recv_timer = journalist.log_timer(
                 f"Completed {issue_count} credential exchanges in"
             )
-            batch_timer = faber.log_timer(
+            batch_timer = journalist.log_timer(
                 f"Started {batch_size} credential exchanges in"
             )
         recv_timer.start()
@@ -416,14 +416,14 @@ async def main(
                     completed = f"Done starting {issue_count} credential exchanges in"
 
                 issue_task = asyncio.ensure_future(
-                    check_received(faber, issue_count, issue_pg)
+                    check_received(journalist, issue_count, issue_pg)
                 )
-                issue_task.add_done_callback(faber.check_task_exception)
+                issue_task.add_done_callback(journalist.check_task_exception)
                 receive_task = asyncio.ensure_future(
-                    check_received(alice, issue_count, receive_pg)
+                    check_received(whistleblower, issue_count, receive_pg)
                 )
-                receive_task.add_done_callback(alice.check_task_exception)
-                with faber.log_timer(completed):
+                receive_task.add_done_callback(whistleblower.check_task_exception)
+                with journalist.log_timer(completed):
                     for idx in range(0, issue_count):
                         await send(idx + 1)
                         if not (idx + 1) % batch_size and idx < issue_count - 1:
@@ -440,34 +440,34 @@ async def main(
         avg = recv_timer.duration / issue_count
         item_short = "ping" if ping_only else "cred"
         item_long = "ping exchange" if ping_only else "credential"
-        faber.log(f"Average time per {item_long}: {avg:.2f}s ({1/avg:.2f}/s)")
+        journalist.log(f"Average time per {item_long}: {avg:.2f}s ({1/avg:.2f}/s)")
 
-        if alice.postgres:
-            await alice.collect_postgres_stats(f"{issue_count} {item_short}s")
-            for line in alice.format_postgres_stats():
-                alice.log(line)
-        if faber.postgres:
-            await faber.collect_postgres_stats(f"{issue_count} {item_short}s")
-            for line in faber.format_postgres_stats():
-                faber.log(line)
+        if whistleblower.postgres:
+            await whistleblower.collect_postgres_stats(f"{issue_count} {item_short}s")
+            for line in whistleblower.format_postgres_stats():
+                whistleblower.log(line)
+        if journalist.postgres:
+            await journalist.collect_postgres_stats(f"{issue_count} {item_short}s")
+            for line in journalist.format_postgres_stats():
+                journalist.log(line)
 
-        if revocation and faber.revocations:
-            (rev_reg_id, cred_rev_id) = next(iter(faber.revocations))
+        if revocation and journalist.revocations:
+            (rev_reg_id, cred_rev_id) = next(iter(journalist.revocations))
             print(
                 "Revoking and publishing cred rev id {cred_rev_id} "
                 "from rev reg id {rev_reg_id}"
             )
 
         if show_timing:
-            timing = await alice.fetch_timing()
+            timing = await whistleblower.fetch_timing()
             if timing:
-                for line in alice.format_timing(timing):
-                    alice.log(line)
+                for line in whistleblower.format_timing(timing):
+                    whistleblower.log(line)
 
-            timing = await faber.fetch_timing()
+            timing = await journalist.fetch_timing()
             if timing:
-                for line in faber.format_timing(timing):
-                    faber.log(line)
+                for line in journalist.format_timing(timing):
+                    journalist.log(line)
             if routing:
                 timing = await alice_router.fetch_timing()
                 if timing:
@@ -477,14 +477,14 @@ async def main(
     finally:
         terminated = True
         try:
-            if alice:
-                await alice.terminate()
+            if whistleblower:
+                await whistleblower.terminate()
         except Exception:
             LOGGER.exception("Error terminating agent:")
             terminated = False
         try:
-            if faber:
-                await faber.terminate()
+            if journalist:
+                await journalist.terminate()
         except Exception:
             LOGGER.exception("Error terminating agent:")
             terminated = False

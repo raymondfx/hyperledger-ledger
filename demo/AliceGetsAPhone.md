@@ -1,6 +1,6 @@
-# Alice Gets a Mobile Agent! <!-- omit in toc -->
+# Whistleblower Gets a Mobile Agent! <!-- omit in toc -->
 
-In this demo, we'll again use our familiar Faber ACA-Py agent to issue credentials to Alice, but this time Alice will use a mobile wallet. To do this we need to run the Faber agent on a publicly accessible port, and Alice will need a compatible mobile wallet. We'll provide pointers to where you can get them.
+In this demo, we'll again use our familiar Journalist ACA-Py agent to issue credentials to Whistleblower, but this time Whistleblower will use a mobile wallet. To do this we need to run the Journalist agent on a publicly accessible port, and Whistleblower will need a compatible mobile wallet. We'll provide pointers to where you can get them.
 
 This demo also introduces revocation of credentials.
 
@@ -11,7 +11,7 @@ This demo also introduces revocation of credentials.
   - [Running Locally in Docker](#running-locally-in-docker)
   - [Running in Play With Docker](#running-in-play-with-docker)
   - [Run an instance of indy-tails-server](#run-an-instance-of-indy-tails-server)
-- [Run `faber` With Extra Parameters](#run-faber-with-extra-parameters)
+- [Run `journalist` With Extra Parameters](#run-journalist-with-extra-parameters)
 - [Accept the Invitation](#accept-the-invitation)
 - [Issue a Credential](#issue-a-credential)
   - [Accept the Credential](#accept-the-credential)
@@ -40,9 +40,9 @@ git clone https://github.com/hyperledger/aries-cloudagent-python.git
 cd aries-cloudagent-python/demo
 ```
 
-We'll come back to this in a minute, when we start the `faber` agent!
+We'll come back to this in a minute, when we start the `journalist` agent!
 
-There are a couple of extra steps you need to take to prepare to run the Faber agent locally:
+There are a couple of extra steps you need to take to prepare to run the Journalist agent locally:
 
 #### Install ngrok and jq
 
@@ -90,7 +90,7 @@ git clone https://github.com/hyperledger/aries-cloudagent-python.git
 cd aries-cloudagent-python/demo
 ```
 
-We'll come back to this in a minute, when we start the `faber` agent!
+We'll come back to this in a minute, when we start the `journalist` agent!
 
 ### Run an instance of indy-tails-server
 
@@ -124,16 +124,16 @@ Note the server name in the `url=https://c5789aa0.ngrok.io` parameter (`https://
 
 Run the same steps on _PWD_ as you would run locally (see above).  Open a new shell (click on "ADD NEW INSTANCE") to run the tails server.
 
-Note that with _Play with Docker_ it can be challenging to capture the information you need from the log file as it scrolls by, you can try leaving off the `--events` option when you run the Faber agent to reduce the quantity of information logged to the screen.
+Note that with _Play with Docker_ it can be challenging to capture the information you need from the log file as it scrolls by, you can try leaving off the `--events` option when you run the Journalist agent to reduce the quantity of information logged to the screen.
 
-### Run `faber` With Extra Parameters
+### Run `journalist` With Extra Parameters
 
 #### Running locally in a bash shell?
 
 If you are running in a _local bash shell_, navigate to [The demo directory](/demo) and run:
 
 ```bash
-TAILS_NETWORK=docker_tails-server LEDGER_URL=http://test.bcovrin.vonx.io ./run_demo faber --revocation --events
+TAILS_NETWORK=docker_tails-server LEDGER_URL=http://test.bcovrin.vonx.io ./run_demo journalist --revocation --events
 ```
 
 The `TAILS_NETWORK` parameter lets the demo script know how to connect to the tails server (which should be running in a separate shell on the same machine).
@@ -143,7 +143,7 @@ The `TAILS_NETWORK` parameter lets the demo script know how to connect to the ta
 If you are running in _Play with Docker_, navigate to [The demo directory](/demo) and run:
 
 ```bash
-PUBLIC_TAILS_URL=https://c4f7fbb85911.ngrok.io LEDGER_URL=http://test.bcovrin.vonx.io ./run_demo faber --revocation --events
+PUBLIC_TAILS_URL=https://c4f7fbb85911.ngrok.io LEDGER_URL=http://test.bcovrin.vonx.io ./run_demo journalist --revocation --events
 ```
 
 The `PUBLIC_TAILS_URL` parameter lets the demo script know how to connect to the tails server. This can be running in another PWD session, or even on your local machine - the ngrok endpoint is public and will map to the correct location.
@@ -152,11 +152,11 @@ Use the ngrok url for the tails server that you noted earlier.
 
 *Note that you _must_ use the `https` url for the tails server endpoint.
 
-*Note - you may want to leave off the `--events` option when you run the Faber agent, if you are finding you are getting too much logging output.
+*Note - you may want to leave off the `--events` option when you run the Journalist agent, if you are finding you are getting too much logging output.
 
-#### Waiting for the Faber agent to start ...
+#### Waiting for the Journalist agent to start ...
 
-The `Preparing agent image...` step on the first run takes a bit of time, so while we wait, let's look at the details of the commands. Running Faber is similar to the instructions in the [Aries OpenAPI Demo](./AriesOpenAPIDemo.md) "Play with Docker" section, except:
+The `Preparing agent image...` step on the first run takes a bit of time, so while we wait, let's look at the details of the commands. Running Journalist is similar to the instructions in the [Aries OpenAPI Demo](./AriesOpenAPIDemo.md) "Play with Docker" section, except:
 
 - We are using the BCovrin Test network because that is a network that the mobile agents can be configured to use.
 - We are running in "auto" mode, so we will make no manual acknowledgements.
@@ -174,7 +174,7 @@ As part of its startup process, the agent will publish a revocation registry to 
 
 ## Accept the Invitation
 
-When the Faber agent starts up it automatically creates an invitation and generates a QR code on the screen. On your mobile app, select "SCAN CODE" (or equivalent) and point your camera at the generated QR code. The mobile agent should automatically capture the code and ask you to confirm the connection. Confirm it.
+When the Journalist agent starts up it automatically creates an invitation and generates a QR code on the screen. On your mobile app, select "SCAN CODE" (or equivalent) and point your camera at the generated QR code. The mobile agent should automatically capture the code and ask you to confirm the connection. Confirm it.
 
 <details>
     <summary>Click here to view screenshot</summary>
@@ -210,22 +210,22 @@ Note that this will use the ngrok endpoint if you are running locally, or your P
 
 ## Issue a Credential
 
-We will use the Faber console to issue a credential. This could be done using the Swagger API as we have done in the connection process. We'll leave that as an exercise to the user.
+We will use the Journalist console to issue a credential. This could be done using the Swagger API as we have done in the connection process. We'll leave that as an exercise to the user.
 
-In the Faber console, select option `1` to send a credential to the mobile agent.
+In the Journalist console, select option `1` to send a credential to the mobile agent.
 
 <details>
     <summary>Click here to view screenshot</summary>
     <img src="./collateral/S-3-credential-0.png" alt="Issue Credential">
 </details>
 
-The Faber agent outputs details to the console; e.g.,
+The Journalist agent outputs details to the console; e.g.,
 
 ```text
-Faber      | Credential: state = credential_issued, credential_exchange_id = bb9bf750-905f-444f-b8aa-42c3a51d9464
-Faber      | Revocation registry id: Jt7PhrEc2rYuS4iVcREfoA:4:Jt7PhrEc2rYuS4iVcREfoA:3:CL:44:default:CL_ACCUM:55a13dff-c104-45b5-b633-d3fd1ac43b9a
-Faber      | Credential revocation id: 1
-Faber      | Credential: state = credential_acked, credential_exchange_id = bb9bf750-905f-444f-b8aa-42c3a51d9464
+Journalist      | Credential: state = credential_issued, credential_exchange_id = bb9bf750-905f-444f-b8aa-42c3a51d9464
+Journalist      | Revocation registry id: Jt7PhrEc2rYuS4iVcREfoA:4:Jt7PhrEc2rYuS4iVcREfoA:3:CL:44:default:CL_ACCUM:55a13dff-c104-45b5-b633-d3fd1ac43b9a
+Journalist      | Credential revocation id: 1
+Journalist      | Credential: state = credential_acked, credential_exchange_id = bb9bf750-905f-444f-b8aa-42c3a51d9464
 ```
 
 The revocation registry id and credential revocation id only appear if revocation is active. If you are doing revocation, you to need the `Revocation registry id` later, so we recommend that you copy it it now and paste it into a text file or someplace that you can access later. If you don't write it down, you can get the Id from the Admin API using the **`GET /revocation/active-registry/{cred_def_id}`** endpoint, and passing in the credential definition Id (which you can get from the **`GET /credential-definitions/created`** endpoint).
@@ -249,9 +249,9 @@ The credential offer should automatically show up in the mobile agent. Accept th
 
 ## Issue a Presentation Request
 
-We will use the Faber console to ask mobile agent for a proof. This could be done using the Swagger API, but we'll leave that as an exercise to the user.
+We will use the Journalist console to ask mobile agent for a proof. This could be done using the Swagger API, but we'll leave that as an exercise to the user.
 
-In the Faber console, select option `2` to send a proof request to the mobile agent.
+In the Journalist console, select option `2` to send a proof request to the mobile agent.
 
 <details>
     <summary>Click here to view screenshot</summary>
@@ -260,7 +260,7 @@ In the Faber console, select option `2` to send a proof request to the mobile ag
 
 ## Present the Proof
 
-The presentation (proof) request should automatically show up in the mobile agent. Follow the instructions provided by the mobile agent to prepare and send the proof back to Faber. That will look something like this:
+The presentation (proof) request should automatically show up in the mobile agent. Follow the instructions provided by the mobile agent to prepare and send the proof back to Journalist. That will look something like this:
 
 <details>
     <summary>Click here to view screenshot</summary>
@@ -277,11 +277,11 @@ The presentation (proof) request should automatically show up in the mobile agen
 
 If the mobile agent is able to successfully prepare and send the proof, you can go back to the Play with Docker terminal to see the status of the proof.
 
-The process should "just work" for the non-revocation use case. If you are using revocation, your results may vary. As of writing this, we get failures on the wallet side with some mobile wallets, and on the Faber side with others (an error in the Indy SDK). As the results improve, we'll update this. Please let us know through GitHub issues if you have any problems running this.
+The process should "just work" for the non-revocation use case. If you are using revocation, your results may vary. As of writing this, we get failures on the wallet side with some mobile wallets, and on the Journalist side with others (an error in the Indy SDK). As the results improve, we'll update this. Please let us know through GitHub issues if you have any problems running this.
 
 ## Review the Proof
 
-In the Faber console window, the proof should be received as validated.
+In the Journalist console window, the proof should be received as validated.
 
 <details>
     <summary>Click here to view screenshot</summary>
@@ -290,7 +290,7 @@ In the Faber console window, the proof should be received as validated.
 
 ## Revoke the Credential and Send Another Proof Request
 
-If you have enabled revocation, you can try revoking the credential pending publication (`faber` options `4` and `5`). For the revocation step, You will need the revocation registry identifier and the credential revocation identifier (which is 1 for the first credential you issued), as the Faber agent logged them to the console at credential issue.
+If you have enabled revocation, you can try revoking the credential pending publication (`journalist` options `4` and `5`). For the revocation step, You will need the revocation registry identifier and the credential revocation identifier (which is 1 for the first credential you issued), as the Journalist agent logged them to the console at credential issue.
 
 Once that is done, try sending another proof request and see what happens! Experiment with immediate and pending publication. Note that immediate publication also publishes any pending revocations on its revocation registry.
 
@@ -301,6 +301,6 @@ Once that is done, try sending another proof request and see what happens! Exper
 
 ## Conclusion
 
-That’s the Faber-Mobile Alice demo. Feel free to play with the Swagger API and experiment further and figure out what an instance of a controller has to do to make things work.
+That’s the Journalist-Mobile Whistleblower demo. Feel free to play with the Swagger API and experiment further and figure out what an instance of a controller has to do to make things work.
 
 <!-- Docs to Markdown version 1.0β17 -->

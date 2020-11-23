@@ -10,9 +10,9 @@ This demo uses agents (and an Indy ledger), but doesn't implement a controller a
 
 ## Python Controller demo
 
-Run this demo to see a couple of simple Python controller implementations for Alice and Faber. Like the previous demo, this shows the agents connecting, Faber issuing a credential to Alice and then requesting a proof based on the credential. Running the demo is simple, but there's a lot for a developer to learn from the code.
+Run this demo to see a couple of simple Python controller implementations for Whistleblower and Journalist. Like the previous demo, this shows the agents connecting, Journalist issuing a credential to Whistleblower and then requesting a proof based on the credential. Running the demo is simple, but there's a lot for a developer to learn from the code.
 
-[Python-based Alice/Faber Demo](../../demo/README.md)
+[Python-based Whistleblower/Journalist Demo](../../demo/README.md)
 
 ## Web App Sample - Email Verification Service
 

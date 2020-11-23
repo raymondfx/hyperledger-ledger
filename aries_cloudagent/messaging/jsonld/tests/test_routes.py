@@ -48,7 +48,7 @@ class TestJSONLDRoutes(AsyncTestCase):
                                 "did:key:"
                                 "z6MkjRagNiMu91DduvCvgEsqLZDVzrJzFrwahc4tXLt9DoHd"
                             ),
-                            "degree": {
+                            "message": {
                                 "type": "BachelorDegree",
                                 "name": "Bachelor of Science and Arts",
                             },
@@ -107,7 +107,7 @@ class TestJSONLDRoutes(AsyncTestCase):
                                     "did:key:"
                                     "z6MkjRagNiMu91DduvCvgEsqLZDVzrJzFrwahc4tXLt9DoHd"
                                 ),
-                                "degree": {
+                                "message": {
                                     "type": "BachelorDegree",
                                     "name": u"Bachelor of Encyclopædic Arts",
                                 },

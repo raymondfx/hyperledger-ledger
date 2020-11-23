@@ -65,16 +65,16 @@ Files are available in the [examples](examples) folder.
 
 Please note that RESTed is not strictly necessary as any other REST client application will work fine.
 
-## Running the aca-py Alice/Faber Demo Tracing using EFK
+## Running the aca-py Whistleblower/Journalist Demo Tracing using EFK
 
 In two separate bash shells, startup the demo as follows:
 
 ```bash
-DOCKER_NET=efk-stack_efk_net TRACE_TARGET_URL=fluentd:8088 ./run_demo faber --trace-http
+DOCKER_NET=efk-stack_efk_net TRACE_TARGET_URL=fluentd:8088 ./run_demo journalist --trace-http
 ```
 
 ```bash
-DOCKER_NET=efk-stack_efk_net TRACE_TARGET_URL=fluentd:8088 ./run_demo alice --trace-http
+DOCKER_NET=efk-stack_efk_net TRACE_TARGET_URL=fluentd:8088 ./run_demo whistleblower --trace-http
 ```
 
 ## Reference
